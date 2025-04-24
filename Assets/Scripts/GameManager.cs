@@ -12,10 +12,19 @@ public class GameManager : Singleton<GameManager>
 {
     public bool CanClick { get; set; }
 
+    // CameraController 인스턴스 프로퍼티
+    public CameraController CameraControl { get; set; } 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         CanClick = true;
     }
 
+    //BamsongiController 클래스(이름 맘에 안든다.) 에서 밤송이가 타겟 오브젝트를 맞출때 호출
+    public void HitTarget()
+    {
+        // 카메라 전환
+        this.CameraControl.CameraMove();
+    }
 }
