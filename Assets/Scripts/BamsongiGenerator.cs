@@ -8,10 +8,10 @@ public class BamsongiGenerator : MonoBehaviour
 {
     public GameObject bamsongiPrefab;
 
-    float _basicPower = 500; // 기본 던지는 힘
+    float _basicPower = 300; // 기본 던지는 힘
     float _currentPower = 0; // 기본 힘에서 배수를 곱한 값 
     float _multiplier = 1; // 기본 힘에 곱할 배수 -> SetSpeed에서 정해짐
-    float _maxMultiplier = 6; // 최대배수
+    float _maxMultiplier = 10; // 최대배수
     float _maxPower = 0; // 최대 파워
 
     bool _isClick = false;
@@ -68,6 +68,7 @@ public class BamsongiGenerator : MonoBehaviour
             Debug.Log("클릭 up");
             // 밤송이 생성
             GenerateBamsongi();
+            GameManager.Instance.CickUp();
         }
     }
 
@@ -78,7 +79,7 @@ public class BamsongiGenerator : MonoBehaviour
     {
         if (_isClick) // 클릭 중일 시에만 설정
         {
-            int pingPongSpeed = 10;
+            int pingPongSpeed = 15;
             // 1~maxPower까지 왔다갔다 한다.
             _multiplier = Mathf.PingPong(Time.time * pingPongSpeed, _maxMultiplier); 
             Debug.Log(_multiplier);
@@ -87,10 +88,10 @@ public class BamsongiGenerator : MonoBehaviour
             _currentPower = _multiplier * _basicPower;
 
             // UI 설정을 위해 currentPower가 maxPower의 몇 퍼센트인지 계산
-            float powerRate = _currentPower / _multiplier;
+            float powerRate = _currentPower / _maxPower;
 
             // UI 활성화 및 설정
-
+            GameManager.Instance.SetPowerUI(powerRate);
         }
     }
 

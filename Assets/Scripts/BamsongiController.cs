@@ -14,6 +14,10 @@ public class BamsongiController : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<ParticleSystem>().Play();
         // 만약 과녁에 맞추었다면, GameManager에게 알려 카메라 전환
+        // 태그도 중요하지만, 하나더 중요한 것은 프리펩에 Bamsongi 레이어를 지정해주고
+        // Layer Collision Martix 에서 Bamsongi 레이어끼리 충돌안되게 설정
+        // 이유는 표적위 밤송이가 붙어있을때, 그 밤송이 위에 맞추면 아래 판정이 안나온다.
+        // 즉 밤송이 끼리 충동은 무시하고 타겟위치면 타겟에 맞을수 있게 설정
         if (collision.gameObject.CompareTag("Target"))
         {
             GameManager.Instance.HitTarget();

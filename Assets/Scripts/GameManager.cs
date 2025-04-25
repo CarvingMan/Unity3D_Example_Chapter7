@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
     // CameraController 인스턴스 프로퍼티
     public CameraController CameraControl { get; set; } 
 
+    public GaugePanel GaugeUI { get; set; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,6 +27,17 @@ public class GameManager : Singleton<GameManager>
     public void HitTarget()
     {
         // 카메라 전환
-        this.CameraControl.CameraMove();
+        this.CameraControl?.CameraMove();
+    }
+
+    // 게이지 세팅
+    public void SetPowerUI(float currentRate)
+    {
+        this.GaugeUI?.SetGauge(currentRate);
+    }
+    // 게이지 비활성화
+    public void CickUp()
+    {
+        this.GaugeUI?.InActiveGauge();
     }
 }
