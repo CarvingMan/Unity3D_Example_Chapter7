@@ -83,9 +83,16 @@ public class CameraController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        // 전부 완료 시 GameManager.Instance의 canClick = true로 설정
-        // 다시 밤송이 발사 가능
-        GameManager.Instance.CanClick = true;
-        _coroutine = null; // 다시 코루틴 호출 가능하게 초기화
+        if (GameManager.Instance.RestCount > 0)
+        {
+            // 전부 완료 시 GameManager.Instance의 canClick = true로 설정
+            // 다시 밤송이 발사 가능
+            GameManager.Instance.CanClick = true;
+            _coroutine = null; // 다시 코루틴 호출 가능하게 초기화
+        }
+        else
+        {
+            GameManager.Instance.GameEnd();
+        }
     }
 }

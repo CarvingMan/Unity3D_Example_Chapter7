@@ -55,6 +55,11 @@ public class BamsongiGenerator : MonoBehaviour
         // 직접 바인딩 하는등, 알아보면 좋다.
         if (Mouse.current.leftButton.wasPressedThisFrame && GameManager.Instance.CanClick)
         {
+            if (GameManager.Instance.RestCount <= 0)
+            {
+                _isClick = false;
+                return;
+            }
             // 현재프레임에서 마우스가 눌러졌을 시 한번
             // 또한 GameManager 인스턴스의 CanClick이 true 일 때에만
             _isClick = true;

@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 사실상 GameDirector 보다는 Manager라는 이름으로 많이 쓰인다.
@@ -17,10 +20,22 @@ public class GameManager : Singleton<GameManager>
 
     public GaugePanel GaugeUI { get; set; }
 
+    public StatusPanel Status {  get; set; }    
+
+    private const int _maxCount = 10; // 최대 횟수
+    public int MaxCount { get { return _maxCount; } }
+    private int _restCount = 0; // 남은 횟수
+    public int RestCount { get { return _restCount; } } 
+
+    private int _score = 0;// 점수
+    public int Score { get { return _score; } }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         CanClick = true;
+        _restCount = _maxCount;
     }
 
     //BamsongiController 클래스(이름 맘에 안든다.) 에서 밤송이가 타겟 오브젝트를 맞출때 호출
@@ -28,6 +43,9 @@ public class GameManager : Singleton<GameManager>
     {
         // 카메라 전환
         this.CameraControl?.CameraMove();
+        _score += 100;// 점수 증가
+        // 점수 UI 갱신
+        Status?.SetScore(_score);
     }
 
     // 게이지 세팅
@@ -35,9 +53,36 @@ public class GameManager : Singleton<GameManager>
     {
         this.GaugeUI?.SetGauge(currentRate);
     }
-    // 게이지 비활성화
+    // 마우스에서 손을 뗄 시
     public void CickUp()
     {
-        this.GaugeUI?.InActiveGauge();
+        this.GaugeUI?.InActiveGauge();// 게이지 비활성화
+        _restCount--; // 카운트 감소
+        //카운트 UI 갱신
+        Status?.SetCount(_restCount);
+    }
+
+    public void GameEnd()
+    {
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            Invoke("LoadEndScene", 1);
+        }
+    }
+
+    void LoadEndScene()
+    {
+        SceneManager.LoadScene("EndScene");
+    }
+
+    public void ReStart()
+    {
+        if (SceneManager.GetActiveScene().name == "EndScene")
+        {
+            _restCount = _maxCount;
+            _score = 0;
+            CanClick = true;
+            SceneManager.LoadScene("GameScene");
+        }
     }
 }

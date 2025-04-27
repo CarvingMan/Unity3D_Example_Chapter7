@@ -18,15 +18,25 @@ public class BamsongiController : MonoBehaviour
         // Layer Collision Martix 에서 Bamsongi 레이어끼리 충돌안되게 설정
         // 이유는 표적위 밤송이가 붙어있을때, 그 밤송이 위에 맞추면 아래 판정이 안나온다.
         // 즉 밤송이 끼리 충동은 무시하고 타겟위치면 타겟에 맞을수 있게 설정
+  
         if (collision.gameObject.CompareTag("Target"))
         {
             GameManager.Instance.HitTarget();
         }
         else
         {
-            // 다시 발사 할 수 있게 설정
-            // Target에 맞을 시에는 따로 카메라 전환후 CameraController.cs에서 설정해준다.
-            GameManager.Instance.CanClick = true;
+            if (GameManager.Instance.RestCount > 0)
+            {
+                // 다시 발사 할 수 있게 설정
+                // Target에 맞을 시에는 따로 카메라 전환후 CameraController.cs에서 설정해준다.
+                GameManager.Instance.CanClick = true;
+            }
+            else
+            {
+                // 타겟 맞을 시 GameEnd 호출은 CameraController.cs에서 한다.
+                GameManager.Instance.GameEnd();
+            }
+            
         }
     }
 
